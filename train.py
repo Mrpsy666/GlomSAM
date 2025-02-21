@@ -220,7 +220,7 @@ def main():
             with torch.autocast(device_type="cuda", dtype=torch.float16):    
                 glomsam_pred = glomsam_model(image, boxes)
                 #BoundaryDouLOss + DiceLoss+ BCELoss
-                loss = 0.5 * ce_loss(glomsam_pred,gt2D.float()) + 0.5 * seg_loss(glomsam_pred,gt2D) + 0.5 * loss_fn(glomsam_pred,gt2D)
+                loss = ce_loss(glomsam_pred,gt2D.float()) + seg_loss(glomsam_pred,gt2D) + loss_fn(glomsam_pred,gt2D)
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
